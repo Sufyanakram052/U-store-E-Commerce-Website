@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="myDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tblcat">
+    <Key>
+      <PropertyRef Name="cid" />
+    </Key>
+    <Property Name="cid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="tblproes" Relationship="Self.FK_tblpro_tblcat" FromRole="tblcat" ToRole="tblpro" />
+  </EntityType>
+  <EntityType Name="tblimage">
+    <Key>
+      <PropertyRef Name="iid" />
+    </Key>
+    <Property Name="iid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="iname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="pid" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tblpro" Relationship="Self.FK_tblimages_tblpro" FromRole="tblimages" ToRole="tblpro" />
+  </EntityType>
+  <EntityType Name="tbloderdetail">
+    <Key>
+      <PropertyRef Name="did" />
+    </Key>
+    <Property Name="did" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="oid" Type="Int32" Nullable="false" />
+    <Property Name="pid" Type="Int32" Nullable="false" />
+    <Property Name="pprice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="pqty" Type="Int32" Nullable="false" />
+    <Property Name="pamoumt" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <NavigationProperty Name="tblorder" Relationship="Self.FK_tbloderdetails_tblorder" FromRole="tbloderdetails" ToRole="tblorder" />
+    <NavigationProperty Name="tblpro" Relationship="Self.FK_tbloderdetails_tblpro" FromRole="tbloderdetails" ToRole="tblpro" />
+  </EntityType>
+  <EntityType Name="tblorder">
+    <Key>
+      <PropertyRef Name="oid" />
+    </Key>
+    <Property Name="oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="odate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="opname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="opphone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="opaddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="opsaddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="oamount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="ostatus" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tbloderdetails" Relationship="Self.FK_tbloderdetails_tblorder" FromRole="tblorder" ToRole="tbloderdetails" />
+  </EntityType>
+  <EntityType Name="tblpro">
+    <Key>
+      <PropertyRef Name="pid" />
+    </Key>
+    <Property Name="pid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="pname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="pprice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="pdetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="cid" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tblcat" Relationship="Self.FK_tblpro_tblcat" FromRole="tblpro" ToRole="tblcat" />
+    <NavigationProperty Name="tblimages" Relationship="Self.FK_tblimages_tblpro" FromRole="tblpro" ToRole="tblimages" />
+    <NavigationProperty Name="tbloderdetails" Relationship="Self.FK_tbloderdetails_tblpro" FromRole="tblpro" ToRole="tbloderdetails" />
+  </EntityType>
+  <EntityType Name="tbluser">
+    <Key>
+      <PropertyRef Name="uid" />
+      <PropertyRef Name="uname" />
+      <PropertyRef Name="upassword" />
+    </Key>
+    <Property Name="uid" Type="Byte" Nullable="false" />
+    <Property Name="uname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="upassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_tblpro_tblcat">
+    <End Role="tblcat" Type="Self.tblcat" Multiplicity="1" />
+    <End Role="tblpro" Type="Self.tblpro" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblcat">
+        <PropertyRef Name="cid" />
+      </Principal>
+      <Dependent Role="tblpro">
+        <PropertyRef Name="cid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblimages_tblpro">
+    <End Role="tblpro" Type="Self.tblpro" Multiplicity="1" />
+    <End Role="tblimages" Type="Self.tblimage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblpro">
+        <PropertyRef Name="pid" />
+      </Principal>
+      <Dependent Role="tblimages">
+        <PropertyRef Name="pid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbloderdetails_tblorder">
+    <End Role="tblorder" Type="Self.tblorder" Multiplicity="1" />
+    <End Role="tbloderdetails" Type="Self.tbloderdetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblorder">
+        <PropertyRef Name="oid" />
+      </Principal>
+      <Dependent Role="tbloderdetails">
+        <PropertyRef Name="oid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbloderdetails_tblpro">
+    <End Role="tblpro" Type="Self.tblpro" Multiplicity="1" />
+    <End Role="tbloderdetails" Type="Self.tbloderdetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblpro">
+        <PropertyRef Name="pid" />
+      </Principal>
+      <Dependent Role="tbloderdetails">
+        <PropertyRef Name="pid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="myDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tblcats" EntityType="Self.tblcat" />
+    <EntitySet Name="tblimages" EntityType="Self.tblimage" />
+    <EntitySet Name="tbloderdetails" EntityType="Self.tbloderdetail" />
+    <EntitySet Name="tblorders" EntityType="Self.tblorder" />
+    <EntitySet Name="tblproes" EntityType="Self.tblpro" />
+    <EntitySet Name="tblusers" EntityType="Self.tbluser" />
+    <AssociationSet Name="FK_tblpro_tblcat" Association="Self.FK_tblpro_tblcat">
+      <End Role="tblcat" EntitySet="tblcats" />
+      <End Role="tblpro" EntitySet="tblproes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblimages_tblpro" Association="Self.FK_tblimages_tblpro">
+      <End Role="tblpro" EntitySet="tblproes" />
+      <End Role="tblimages" EntitySet="tblimages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbloderdetails_tblorder" Association="Self.FK_tbloderdetails_tblorder">
+      <End Role="tblorder" EntitySet="tblorders" />
+      <End Role="tbloderdetails" EntitySet="tbloderdetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbloderdetails_tblpro" Association="Self.FK_tbloderdetails_tblpro">
+      <End Role="tblpro" EntitySet="tblproes" />
+      <End Role="tbloderdetails" EntitySet="tbloderdetails" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

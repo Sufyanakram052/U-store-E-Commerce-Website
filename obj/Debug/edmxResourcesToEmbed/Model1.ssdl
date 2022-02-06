@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="myDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblcat">
+    <Key>
+      <PropertyRef Name="cid" />
+    </Key>
+    <Property Name="cid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cname" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblimages">
+    <Key>
+      <PropertyRef Name="iid" />
+    </Key>
+    <Property Name="iid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="iname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="pid" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbloderdetails">
+    <Key>
+      <PropertyRef Name="did" />
+    </Key>
+    <Property Name="did" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="oid" Type="int" Nullable="false" />
+    <Property Name="pid" Type="int" Nullable="false" />
+    <Property Name="pprice" Type="money" Nullable="false" />
+    <Property Name="pqty" Type="int" Nullable="false" />
+    <Property Name="pamoumt" Type="money" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblorder">
+    <Key>
+      <PropertyRef Name="oid" />
+    </Key>
+    <Property Name="oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="odate" Type="date" Nullable="false" />
+    <Property Name="opname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="opphone" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="opaddress" Type="text" Nullable="false" />
+    <Property Name="opsaddress" Type="text" Nullable="false" />
+    <Property Name="oamount" Type="money" Nullable="false" />
+    <Property Name="ostatus" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblpro">
+    <Key>
+      <PropertyRef Name="pid" />
+    </Key>
+    <Property Name="pid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="pprice" Type="money" Nullable="false" />
+    <Property Name="pdetails" Type="text" Nullable="false" />
+    <Property Name="cid" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'myDB.dbo.tblusers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tblusers">
+    <Key>
+      <PropertyRef Name="uid" />
+      <PropertyRef Name="uname" />
+      <PropertyRef Name="upassword" />
+    </Key>
+    <Property Name="uid" Type="tinyint" Nullable="false" />
+    <Property Name="uname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="upassword" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_tblimages_tblpro">
+    <End Role="tblpro" Type="Self.tblpro" Multiplicity="1" />
+    <End Role="tblimages" Type="Self.tblimages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblpro">
+        <PropertyRef Name="pid" />
+      </Principal>
+      <Dependent Role="tblimages">
+        <PropertyRef Name="pid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbloderdetails_tblorder">
+    <End Role="tblorder" Type="Self.tblorder" Multiplicity="1" />
+    <End Role="tbloderdetails" Type="Self.tbloderdetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblorder">
+        <PropertyRef Name="oid" />
+      </Principal>
+      <Dependent Role="tbloderdetails">
+        <PropertyRef Name="oid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbloderdetails_tblpro">
+    <End Role="tblpro" Type="Self.tblpro" Multiplicity="1" />
+    <End Role="tbloderdetails" Type="Self.tbloderdetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblpro">
+        <PropertyRef Name="pid" />
+      </Principal>
+      <Dependent Role="tbloderdetails">
+        <PropertyRef Name="pid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblpro_tblcat">
+    <End Role="tblcat" Type="Self.tblcat" Multiplicity="1" />
+    <End Role="tblpro" Type="Self.tblpro" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblcat">
+        <PropertyRef Name="cid" />
+      </Principal>
+      <Dependent Role="tblpro">
+        <PropertyRef Name="cid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="myDBModelStoreContainer">
+    <EntitySet Name="tblcat" EntityType="Self.tblcat" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblimages" EntityType="Self.tblimages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbloderdetails" EntityType="Self.tbloderdetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblorder" EntityType="Self.tblorder" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblpro" EntityType="Self.tblpro" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblusers" EntityType="Self.tblusers" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tblusers].[uid] AS [uid], 
+    [tblusers].[uname] AS [uname], 
+    [tblusers].[upassword] AS [upassword]
+    FROM [dbo].[tblusers] AS [tblusers]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_tblimages_tblpro" Association="Self.FK_tblimages_tblpro">
+      <End Role="tblpro" EntitySet="tblpro" />
+      <End Role="tblimages" EntitySet="tblimages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbloderdetails_tblorder" Association="Self.FK_tbloderdetails_tblorder">
+      <End Role="tblorder" EntitySet="tblorder" />
+      <End Role="tbloderdetails" EntitySet="tbloderdetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbloderdetails_tblpro" Association="Self.FK_tbloderdetails_tblpro">
+      <End Role="tblpro" EntitySet="tblpro" />
+      <End Role="tbloderdetails" EntitySet="tbloderdetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblpro_tblcat" Association="Self.FK_tblpro_tblcat">
+      <End Role="tblcat" EntitySet="tblcat" />
+      <End Role="tblpro" EntitySet="tblpro" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
