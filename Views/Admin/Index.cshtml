@@ -1,0 +1,31 @@
+﻿@model finallab.tbluser
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Admin </h2>
+<table>
+    @{
+        @Html.BeginForm("Index", "Admin", FormMethod.Post);
+
+        <tr>
+            <td>
+                UserName:
+            </td>
+            <td>@Html.TextBoxFor(a => a.uname)</td>
+
+        </tr>
+        <tr>
+            <td>
+                Password:
+            </td>
+            <td>@Html.PasswordFor(a => a.upassword)</td>
+        </tr>
+
+        <tr>
+            <td>@ViewBag.msg</td>
+            <td><input type="submit" value="Login"/></td>
+
+        </tr>
+    }
+</table>
